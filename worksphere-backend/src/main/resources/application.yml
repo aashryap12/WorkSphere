@@ -1,0 +1,6 @@
+server:
+  port: 8080
+
+spring:
+  mongodb:
+    uri: mongodb+srv://patelaashrya_db_user:Patel123@worksphere.qcqkbxu.mongodb.net/worksphere?retryWrites=true&w=majority
