@@ -1,0 +1,364 @@
+/* Hero Section */
+.roles-hero {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+  padding: 80px 24px 60px;
+  text-align: center;
+}
+
+.roles-hero .hero-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: 20px;
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.roles-hero .hero-subtitle {
+  font-size: 1.2rem;
+  color: #475569;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Roles Section */
+.roles-section {
+  padding: 80px 0;
+  background: #fff;
+}
+
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+}
+
+.role-card {
+  background: #f8fafc;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+}
+
+.role-card:hover {
+  border-color: #bfdbfe;
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+  transform: translateY(-8px);
+}
+
+.role-image {
+  position: relative;
+  overflow: hidden;
+  height: 240px;
+}
+
+.role-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.role-card:hover .role-image img {
+  transform: scale(1.08);
+}
+
+.role-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.role-card:hover .role-overlay {
+  opacity: 1;
+}
+
+.role-overlay .btn {
+  margin: 0;
+}
+
+.role-content {
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex-grow: 1;
+}
+
+.role-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.role-subtitle-text {
+  font-size: 0.9rem;
+  color: #3b82f6;
+  font-weight: 600;
+  margin: 0;
+}
+
+.role-desc {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.role-features {
+  padding-top: 16px;
+}
+
+.role-features h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 12px;
+  margin-top: 0;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+.role-features ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.role-features li {
+  font-size: 0.9rem;
+  color: #475569;
+  padding-left: 20px;
+  position: relative;
+}
+
+.role-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #3b82f6;
+  font-weight: 700;
+}
+
+.role-benefits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.benefit-badge {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #1e40af;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Capabilities Section */
+.capabilities-section {
+  padding: 80px 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.section-title {
+  text-align: center;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 60px;
+}
+
+.capabilities-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 40px;
+}
+
+.capability-group h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 24px;
+}
+
+.capability-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.capability-card {
+  background: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  border-left: 4px solid #3b82f6;
+}
+
+.capability-card h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 16px;
+  margin-top: 0;
+}
+
+.capability-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.capability-card li {
+  font-size: 0.9rem;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkmark {
+  color: #10b981;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Permission Matrix */
+.permission-section {
+  padding: 80px 0;
+  background: #fff;
+}
+
+.permission-matrix {
+  overflow-x: auto;
+}
+
+.permission-matrix table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.permission-matrix thead {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #fff;
+}
+
+.permission-matrix th {
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.permission-matrix td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+.permission-matrix tbody tr:hover {
+  background: #f8fafc;
+}
+
+.access-full {
+  color: #10b981;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.access-partial {
+  color: #f59e0b;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.access-none {
+  color: #cbd5e1;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* CTA Section */
+.roles-cta {
+  padding: 60px 0;
+  background: #fff;
+}
+
+.cta-box {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  padding: 60px 40px;
+  border-radius: 20px;
+  text-align: center;
+  color: #fff;
+}
+
+.cta-box h2 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  margin-bottom: 16px;
+  font-weight: 800;
+}
+
+.cta-box p {
+  font-size: 1.1rem;
+  margin-bottom: 32px;
+  opacity: 0.95;
+}
+
+.cta-box .btn-primary {
+  background: #fff;
+  color: #3b82f6;
+  border-color: #fff;
+}
+
+.cta-box .btn-primary:hover {
+  background: #f0f9ff;
+  border-color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .roles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .capabilities-tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .permission-matrix {
+    font-size: 0.85rem;
+  }
+
+  .permission-matrix th,
+  .permission-matrix td {
+    padding: 12px 8px;
+  }
+
+  .cta-box {
+    padding: 40px 24px;
+  }
+}

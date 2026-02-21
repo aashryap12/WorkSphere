@@ -17,11 +17,13 @@ import lombok.NoArgsConstructor;
 public class User {
 	@Id
 	private ObjectId id;
+	private String firstName;
+	private String lastName;
 	private String username;
 	private String email;
 	private String passwordHash;
+	private String role;
 	private boolean active;
-	private ObjectId roleId;
 	private Instant createdAt;
 	private Instant updatedAt;
 }
