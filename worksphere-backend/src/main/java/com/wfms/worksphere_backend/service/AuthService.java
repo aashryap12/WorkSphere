@@ -1,7 +1,6 @@
 package com.wfms.worksphere_backend.service;
 
 import java.time.Instant;
-import java.util.UUID;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,14 +11,17 @@ import com.wfms.worksphere_backend.dto.LoginResponse;
 import com.wfms.worksphere_backend.dto.RegisterRequest;
 import com.wfms.worksphere_backend.model.User;
 import com.wfms.worksphere_backend.repository.UserRepository;
+import com.wfms.worksphere_backend.security.JwtUtil;
 
 @Service
 public class AuthService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
-    public AuthService(UserRepository userRepository) {
+    public AuthService(UserRepository userRepository, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
+        this.jwtUtil = jwtUtil;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
@@ -35,8 +37,12 @@ public class AuthService {
             throw new RuntimeException("Account is disabled");
         }
 
-        // Generate simple token (in production, use JWT)
-        String token = UUID.randomUUID().toString();
+        // Generate JWT token
+        String token = jwtUtil.generateToken(
+                user.getId().toString(),
+                user.getUsername(),
+                user.getRole()
+        );
 
         return new LoginResponse(
                 token,

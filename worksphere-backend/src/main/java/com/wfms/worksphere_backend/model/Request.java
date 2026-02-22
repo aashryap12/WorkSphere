@@ -16,13 +16,14 @@ import lombok.NoArgsConstructor;
 @Document(collection = "requests")
 public class Request {
     @Id
-    private ObjectId id;
+    private String id;
     private String type;
-    private String title;
     private String description;
+    private String startDate;
+    private String endDate;
+    private String submittedDate;
+    private String approvedBy;
     private ObjectId userId;
-    private ObjectId vendorId;
-    private ObjectId paymentId;
     private String status;
     private Instant createdAt;
     private Instant updatedAt;

@@ -12,10 +12,11 @@ import lombok.NoArgsConstructor;
 public class RequestDTO {
     private ObjectId id;
     private String type;
-    private String title;
     private String description;
+    private String startDate;
+    private String endDate;
+    private String submittedDate;
+    private String approvedBy;
     private ObjectId userId;
-    private ObjectId vendorId;
-    private ObjectId paymentId;
     private String status;
 }

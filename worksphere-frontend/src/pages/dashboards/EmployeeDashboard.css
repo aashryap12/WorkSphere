@@ -87,6 +87,11 @@
   font-size: 13px;
   transition: all 0.2s ease;
   border: 1px solid transparent;
+  background: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
 }
 
 .nav-item:hover {
