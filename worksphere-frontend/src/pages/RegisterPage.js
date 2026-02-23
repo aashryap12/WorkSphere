@@ -19,6 +19,7 @@ function RegisterPage() {
     { id: 'employee', label: 'Employee' },
     { id: 'manager', label: 'Manager' },
     { id: 'hr', label: 'HR Admin' },
+    { id: 'admin', label: 'System Admin' },
   ];
 
   const handleInputChange = (e) => {

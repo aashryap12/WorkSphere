@@ -1,6 +1,7 @@
 package com.wfms.worksphere_backend.service;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -9,18 +10,22 @@ import com.wfms.worksphere_backend.dto.ApiResponse;
 import com.wfms.worksphere_backend.dto.LoginRequest;
 import com.wfms.worksphere_backend.dto.LoginResponse;
 import com.wfms.worksphere_backend.dto.RegisterRequest;
+import com.wfms.worksphere_backend.model.Employee;
 import com.wfms.worksphere_backend.model.User;
+import com.wfms.worksphere_backend.repository.EmployeeRepository;
 import com.wfms.worksphere_backend.repository.UserRepository;
 import com.wfms.worksphere_backend.security.JwtUtil;
 
 @Service
 public class AuthService {
     private final UserRepository userRepository;
+    private final EmployeeRepository employeeRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public AuthService(UserRepository userRepository, JwtUtil jwtUtil) {
+    public AuthService(UserRepository userRepository, EmployeeRepository employeeRepository, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
+        this.employeeRepository = employeeRepository;
         this.jwtUtil = jwtUtil;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
@@ -48,6 +53,7 @@ public class AuthService {
                 token,
                 user.getId().toString(),
                 user.getUsername(),
+                user.getEmail(),
                 user.getRole()
         );
     }
@@ -76,13 +82,40 @@ public class AuthService {
         user.setUsername(finalUsername);
         user.setEmail(request.getEmail());
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole() != null ? request.getRole() : "employee");
+        String role = request.getRole() != null ? request.getRole() : "employee";
+        user.setRole(role);
         user.setActive(true);
         user.setCreatedAt(Instant.now());
         user.setUpdatedAt(Instant.now());
 
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        // Create Employee record for employees and managers
+        if ("employee".equalsIgnoreCase(role) || "manager".equalsIgnoreCase(role)) {
+            createEmployeeRecord(savedUser);
+        }
 
         return new ApiResponse<>(true, "Registration successful", null);
+    }
+
+    private void createEmployeeRecord(User user) {
+        Employee employee = new Employee();
+        employee.setUserId(user.getId());
+        employee.setFirstName(user.getFirstName());
+        employee.setLastName(user.getLastName());
+        employee.setEmail(user.getEmail());
+        employee.setEmployeeCode(generateEmployeeCode());
+        employee.setJobTitle("employee".equalsIgnoreCase(user.getRole()) ? "Employee" : "Manager");
+        employee.setHireDate(LocalDate.now());
+        employee.setEmploymentStatus("Active");
+        employee.setCreatedAt(Instant.now());
+        employee.setUpdatedAt(Instant.now());
+        
+        employeeRepository.save(employee);
+    }
+
+    private String generateEmployeeCode() {
+        long count = employeeRepository.count() + 1;
+        return String.format("EMP-%03d", count);
     }
 }

@@ -486,6 +486,260 @@
 .schedule-time { flex: 1; color: var(--text-primary); }
 .schedule-hours { font-size: 12px; color: var(--text-secondary); }
 
+/* Payroll Overview Styles */
+.payroll-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.payroll-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(248, 250, 252, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.payroll-period {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 140px;
+}
+
+.period-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.period-dates {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.payroll-details {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+}
+
+.gross-amount,
+.net-amount {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.net-amount {
+  font-weight: 600;
+  color: var(--accent-green);
+}
+
+.payroll-status {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.payroll-status.paid {
+  background: rgba(16, 185, 129, 0.15);
+  color: #047857;
+}
+
+.payroll-status.pending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #b45309;
+}
+
+.payroll-status.processing {
+  background: rgba(37, 99, 235, 0.15);
+  color: #1d4ed8;
+}
+
+/* Requests Overview Styles */
+.requests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.request-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(248, 250, 252, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.request-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.request-type {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.request-dates {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.request-status {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.request-status.pending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #b45309;
+}
+
+.request-status.approved {
+  background: rgba(16, 185, 129, 0.15);
+  color: #047857;
+}
+
+.request-status.rejected {
+  background: rgba(220, 38, 38, 0.15);
+  color: #b91c1c;
+}
+
+.pending-badge {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 8px;
+  font-size: 12px;
+  color: #b45309;
+  text-align: center;
+}
+
+/* Tasks Overview Styles */
+.tasks-overview-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-overview-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(248, 250, 252, 0.9);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-left: 3px solid #64748b;
+}
+
+.task-overview-item.low {
+  border-left-color: #64748b;
+}
+
+.task-overview-item.medium {
+  border-left-color: #f59e0b;
+}
+
+.task-overview-item.high {
+  border-left-color: #f97316;
+}
+
+.task-overview-item.urgent {
+  border-left-color: #dc2626;
+}
+
+.task-overview-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.task-overview-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.task-overview-due {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.task-overview-status {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.task-overview-status.pending {
+  background: rgba(245, 158, 11, 0.15);
+  color: #b45309;
+}
+
+.task-overview-status.in-progress {
+  background: rgba(124, 58, 237, 0.15);
+  color: #6d28d9;
+}
+
+.task-overview-status.completed {
+  background: rgba(16, 185, 129, 0.15);
+  color: #047857;
+}
+
+.tasks-count-badge {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: rgba(124, 58, 237, 0.1);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-radius: 8px;
+  font-size: 12px;
+  color: #6d28d9;
+  text-align: center;
+}
+
+/* Loading and Empty States */
+.loading-message,
+.empty-message {
+  padding: 24px;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.loading-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.empty-message {
+  background: rgba(148, 163, 184, 0.08);
+  border-radius: 12px;
+}
+
 .announcement-icon,
 .action-icon,
 .alert-icon,

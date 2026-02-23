@@ -12,9 +12,9 @@ const AdminDashboard = () => {
   });
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
-    const username = localStorage.getItem('username');
+    const token = sessionStorage.getItem('token');
+    const role = sessionStorage.getItem('role');
+    const username = sessionStorage.getItem('username');
 
     if (!token || role !== 'admin') {
       navigate('/login');
@@ -25,7 +25,7 @@ const AdminDashboard = () => {
   }, [navigate]);
 
   const handleLogout = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     navigate('/login');
   };
 

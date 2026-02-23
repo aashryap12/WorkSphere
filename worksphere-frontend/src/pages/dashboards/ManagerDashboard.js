@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import DashboardTopBar from '../../components/DashboardTopBar';
 import Icon from '../../components/DashboardIcons';
 import ManagerApprovals from '../manager-portal/ManagerApprovals';
+import Scheduling from '../manager-portal/Scheduling';
+import MyTeam from '../manager-portal/MyTeam';
 import './ManagerDashboard.css';
 
 const ManagerDashboard = () => {
@@ -14,9 +16,9 @@ const ManagerDashboard = () => {
   const [activePage, setActivePage] = useState('overview');
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
-    const username = localStorage.getItem('username');
+    const token = sessionStorage.getItem('token');
+    const role = sessionStorage.getItem('role');
+    const username = sessionStorage.getItem('username');
 
     if (!token || role !== 'manager') {
       navigate('/login');
@@ -24,10 +26,10 @@ const ManagerDashboard = () => {
     }
 
     setUser({ username, role });
-  }, [navigate]);
+  }, []);
 
   const handleLogout = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     navigate('/login');
   };
 
@@ -106,9 +108,7 @@ const ManagerDashboard = () => {
                 <p className="dashboard-subtitle">Welcome, {user.username} - Manage your team effectively</p>
               </div>
               <div className="header-actions">
-                <button className="btn-primary">
-                  <Icon name="plus" className="icon" /> Add Employee
-                </button>
+                
                 <button className="btn-secondary">
                   <Icon name="bell" className="icon" /> Notifications
                 </button>
@@ -230,7 +230,7 @@ const ManagerDashboard = () => {
               <div className="dashboard-card">
                 <div className="card-header">
                   <h3>Pending Approvals</h3>
-                  <span className="badge-count">8</span>
+                  
                 </div>
                 
                 <button className="btn-link-full" onClick={() => setActivePage('approvals')}>View All Approvals →</button>
@@ -240,6 +240,8 @@ const ManagerDashboard = () => {
         )}
 
         {activePage === 'approvals' && <ManagerApprovals />}
+        {activePage === 'scheduling' && <Scheduling />}
+        {activePage === 'team' && <MyTeam />}
       </div>
     </div>
   );

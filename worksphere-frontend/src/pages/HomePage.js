@@ -100,7 +100,7 @@ const CASE_STUDIES = [
   },
   {
     company: 'Palace Playland',
-    stat: '$1,000+ saved',
+    stat: 'Rs.1,000+ saved',
     description: 'a week in time theft costs · 50% reduction in timesheet auditing',
     tags: 'Time and Attendance · Labor Compliance',
     image: casePalace,

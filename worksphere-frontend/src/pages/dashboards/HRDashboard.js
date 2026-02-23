@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import DashboardTopBar from '../../components/DashboardTopBar';
 import Icon from '../../components/DashboardIcons';
 import './HRDashboard.css';
@@ -12,9 +12,9 @@ const HRDashboard = () => {
   });
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const role = localStorage.getItem('role');
-    const username = localStorage.getItem('username');
+    const token = sessionStorage.getItem('token');
+    const role = sessionStorage.getItem('role');
+    const username = sessionStorage.getItem('username');
 
     if (!token || role !== 'hr') {
       navigate('/login');
@@ -22,10 +22,10 @@ const HRDashboard = () => {
     }
 
     setUser({ username, role });
-  }, [navigate]);
+  }, []);
 
   const handleLogout = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     navigate('/login');
   };
 
@@ -41,34 +41,20 @@ const HRDashboard = () => {
             <span className="nav-icon"><Icon name="overview" /></span>
             Overview
           </a>
-          <a href="#employees" className="nav-item">
+          <Link to="/hr-dashboard/employees" className="nav-item">
             <span className="nav-icon"><Icon name="users" /></span>
             Employees
-          </a>
-          <a href="#recruitment" className="nav-item">
-            <span className="nav-icon"><Icon name="briefcase" /></span>
-            Recruitment
-          </a>
-          <a href="#onboarding" className="nav-item">
-            <span className="nav-icon"><Icon name="spark" /></span>
-            Onboarding
-          </a>
-          <a href="#payroll" className="nav-item">
+          </Link>
+          <Link to="/hr-dashboard/attendance" className="nav-item">
+            <span className="nav-icon"><Icon name="calendar" /></span>
+            Attendance
+          </Link>
+          <Link to="/hr-dashboard/payroll" className="nav-item">
             <span className="nav-icon"><Icon name="wallet" /></span>
             Payroll
-          </a>
-          <a href="#benefits" className="nav-item">
-            <span className="nav-icon"><Icon name="heart" /></span>
-            Benefits
-          </a>
-          <a href="#compliance" className="nav-item">
-            <span className="nav-icon"><Icon name="shield" /></span>
-            Compliance
-          </a>
-          <a href="#reports" className="nav-item">
-            <span className="nav-icon"><Icon name="report" /></span>
-            Reports
-          </a>
+          </Link>
+          
+          
         </nav>
         <button className="logout-btn" onClick={handleLogout}>
           <span className="nav-icon"><Icon name="log" /></span>
@@ -84,11 +70,9 @@ const HRDashboard = () => {
             <p className="dashboard-subtitle">Welcome, {user.username} - Human Resources Management</p>
           </div>
           <div className="header-actions">
-            <button className="btn-primary">
-              <Icon name="plus" className="icon" /> New Employee
-            </button>
+            
             <button className="btn-secondary">
-              <Icon name="inbox" className="icon" /> Import Data
+              <Icon name="bell" className="icon" /> Notifications
             </button>
           </div>
         </div>
@@ -298,34 +282,7 @@ const HRDashboard = () => {
             </div>
           </div>
 
-          <div className="dashboard-card">
-            <div className="card-header">
-              <h3>Compliance Alerts</h3>
-            </div>
-            <div className="alerts-list">
-              <div className="alert-item warning">
-                <div className="alert-icon"><Icon name="alert" /></div>
-                <div className="alert-content">
-                  <h4>Certifications Expiring</h4>
-                  <p>5 employees need to renew certifications</p>
-                </div>
-              </div>
-              <div className="alert-item info">
-                <div className="alert-icon"><Icon name="info" /></div>
-                <div className="alert-content">
-                  <h4>Training Due</h4>
-                  <p>12 employees pending compliance training</p>
-                </div>
-              </div>
-              <div className="alert-item success">
-                <div className="alert-icon"><Icon name="success" /></div>
-                <div className="alert-content">
-                  <h4>Audit Complete</h4>
-                  <p>Q1 compliance audit passed successfully</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          
 
           <div className="dashboard-card">
             <div className="card-header">

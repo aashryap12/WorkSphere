@@ -21,7 +21,7 @@ const Requests = () => {
     const loadData = async () => {
       setIsFetching(true);
       try {
-        const token = localStorage.getItem('token');
+        const token = sessionStorage.getItem('token');
         if (!token) {
           throw new Error('No authentication token. Please log in first.');
         }
@@ -53,7 +53,7 @@ const Requests = () => {
     e.preventDefault();
     setAlerts({ status: null, msg: '' });
     try {
-      const token = localStorage.getItem('token');
+      const token = sessionStorage.getItem('token');
       const response = await fetch(`${API_URL}/api/requests`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },

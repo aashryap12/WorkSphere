@@ -1,34 +1,141 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Icon from '../../components/DashboardIcons';
 import './MyProfile.css';
 
 const MyProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [profileData, setProfileData] = useState({
-    firstName: 'John',
-    lastName: 'Smith',
-    email: 'john.smith@worksphere.com',
-    phone: '+1 (555) 123-4567',
-    department: 'Engineering',
-    position: 'Senior Software Engineer',
-    manager: 'Sarah Wilson',
-    startDate: 'Jan 15, 2023',
-    employeeId: 'EMP-2023-0847',
-    office: 'New York - Building A',
-    reportsTo: 'Sarah Wilson',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    department: '',
+    position: '',
+    manager: '',
+    startDate: '',
+    employeeId: '',
+    employeeCode: '',
+    status: '',
   });
 
   const [editData, setEditData] = useState(profileData);
 
-  const handleSave = () => {
-    setProfileData(editData);
-    setIsEditing(false);
+  const userId = sessionStorage.getItem('userId');
+  const userEmail = sessionStorage.getItem('email');
+
+  useEffect(() => {
+    fetchProfileData();
+  }, []);
+
+  const fetchProfileData = async () => {
+    try {
+      setLoading(true);
+      const token = sessionStorage.getItem('token');
+      
+      // Try to get employee by userId first
+      let response = await fetch(`http://localhost:8080/api/employees/user/${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      // Fallback to email
+      if (!response.ok && userEmail) {
+        response = await fetch(`http://localhost:8080/api/employees/email/${encodeURIComponent(userEmail)}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+      }
+
+      if (response.ok) {
+        const employee = await response.json();
+        const data = {
+          id: employee.id,
+          firstName: employee.firstName || '',
+          lastName: employee.lastName || '',
+          email: employee.email || userEmail || '',
+          phone: employee.phone || '',
+          department: employee.department || employee.departmentName || '',
+          position: employee.jobTitle || '',
+          manager: employee.manager || employee.managerName || '',
+          startDate: employee.startDate || '',
+          employeeId: employee.id,
+          employeeCode: employee.employeeCode || '',
+          status: employee.status || employee.employmentStatus || 'Active',
+        };
+        setProfileData(data);
+        setEditData(data);
+        setError(null);
+      } else {
+        setError('Profile not found. Please contact HR.');
+      }
+    } catch (err) {
+      setError('Failed to load profile data');
+      console.error('Error fetching profile:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      const token = sessionStorage.getItem('token');
+      const response = await fetch(`http://localhost:8080/api/employees/${profileData.id}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          firstName: editData.firstName,
+          lastName: editData.lastName,
+          email: editData.email,
+          phone: editData.phone,
+        })
+      });
+
+      if (response.ok) {
+        setProfileData(editData);
+        setIsEditing(false);
+        alert('Profile updated successfully!');
+      } else {
+        alert('Failed to update profile');
+      }
+    } catch (err) {
+      alert('Failed to update profile: ' + err.message);
+    }
   };
 
   const handleCancel = () => {
     setEditData(profileData);
     setIsEditing(false);
   };
+
+  if (loading) {
+    return (
+      <div className="profile-container">
+        <div className="loading-state">
+          <Icon name="clock" /> Loading profile...
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="profile-container">
+        <div className="error-state">
+          <Icon name="alert" /> {error}
+          <button onClick={fetchProfileData} className="retry-btn">Retry</button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="profile-container">
@@ -65,19 +172,19 @@ const MyProfile = () => {
                 <>
                   <div className="info-row">
                     <span className="info-label">First Name</span>
-                    <span className="info-value">{profileData.firstName}</span>
+                    <span className="info-value">{profileData.firstName || '-'}</span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">Last Name</span>
-                    <span className="info-value">{profileData.lastName}</span>
+                    <span className="info-value">{profileData.lastName || '-'}</span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">Email</span>
-                    <span className="info-value">{profileData.email}</span>
+                    <span className="info-value">{profileData.email || '-'}</span>
                   </div>
                   <div className="info-row">
                     <span className="info-label">Phone</span>
-                    <span className="info-value">{profileData.phone}</span>
+                    <span className="info-value">{profileData.phone || '-'}</span>
                   </div>
                 </>
               ) : (
@@ -126,52 +233,35 @@ const MyProfile = () => {
             </div>
             <div className="card-body">
               <div className="info-row">
-                <span className="info-label">Employee ID</span>
-                <span className="info-value">{profileData.employeeId}</span>
+                <span className="info-label">Employee Code</span>
+                <span className="info-value">{profileData.employeeCode || '-'}</span>
               </div>
               <div className="info-row">
                 <span className="info-label">Department</span>
-                <span className="info-value">{profileData.department}</span>
+                <span className="info-value">{profileData.department || '-'}</span>
               </div>
               <div className="info-row">
                 <span className="info-label">Position</span>
-                <span className="info-value">{profileData.position}</span>
+                <span className="info-value">{profileData.position || '-'}</span>
               </div>
               <div className="info-row">
                 <span className="info-label">Manager</span>
-                <span className="info-value">{profileData.manager}</span>
+                <span className="info-value">{profileData.manager || '-'}</span>
               </div>
               <div className="info-row">
-                <span className="info-label">Office</span>
-                <span className="info-value">{profileData.office}</span>
+                <span className="info-label">Status</span>
+                <span className={`info-value status-badge ${profileData.status?.toLowerCase()}`}>
+                  {profileData.status || '-'}
+                </span>
               </div>
               <div className="info-row">
                 <span className="info-label">Start Date</span>
-                <span className="info-value">{profileData.startDate}</span>
+                <span className="info-value">{profileData.startDate || '-'}</span>
               </div>
             </div>
           </div>
 
-          {/* Contact Information Card */}
-          <div className="profile-card">
-            <div className="card-header">
-              <h3>Emergency Contact</h3>
-            </div>
-            <div className="card-body">
-              <div className="info-row">
-                <span className="info-label">Name</span>
-                <span className="info-value">Sarah Smith</span>
-              </div>
-              <div className="info-row">
-                <span className="info-label">Relationship</span>
-                <span className="info-value">Spouse</span>
-              </div>
-              <div className="info-row">
-                <span className="info-label">Phone</span>
-                <span className="info-value">+1 (555) 123-4568</span>
-              </div>
-            </div>
-          </div>
+         
 
           {/* Qualifications Card */}
           <div className="profile-card">

@@ -14,6 +14,7 @@ import EmployeeDashboard from './pages/dashboards/EmployeeDashboard';
 import ManagerDashboard from './pages/dashboards/ManagerDashboard';
 import HRDashboard from './pages/dashboards/HRDashboard';
 import AdminDashboard from './pages/dashboards/AdminDashboard';
+import { Employees, AttendanceMonitoring, PayrollManagement } from './pages/hr-portal';
 
 function App() {
   return (
@@ -37,6 +38,9 @@ function App() {
         </Route>
         <Route element={<ProtectedRoute allowedRole="hr" />}>
           <Route path="hr-dashboard" element={<HRDashboard />} />
+          <Route path="hr-dashboard/employees" element={<Employees />} />
+          <Route path="hr-dashboard/attendance" element={<AttendanceMonitoring />} />
+          <Route path="hr-dashboard/payroll" element={<PayrollManagement />} />
         </Route>
         <Route element={<ProtectedRoute allowedRole="admin" />}>
           <Route path="admin-dashboard" element={<AdminDashboard />} />

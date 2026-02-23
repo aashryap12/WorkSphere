@@ -44,7 +44,7 @@ const ManagerApprovals = () => {
 	const fetchRequests = async () => {
 		setLoading(true);
 		try {
-			const token = localStorage.getItem('token');
+			const token = sessionStorage.getItem('token');
 			const response = await fetch(`${API_URL}/api/requests/manager/all`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -87,7 +87,7 @@ const ManagerApprovals = () => {
 
 	const handleApprove = async (id) => {
 		try {
-			const token = localStorage.getItem('token');
+			const token = sessionStorage.getItem('token');
 			const response = await fetch(`${API_URL}/api/requests/${id}/approve`, {
 				method: 'PUT',
 				headers: {
@@ -112,7 +112,7 @@ const ManagerApprovals = () => {
 
 	const handleReject = async (id) => {
 		try {
-			const token = localStorage.getItem('token');
+			const token = sessionStorage.getItem('token');
 			const response = await fetch(`${API_URL}/api/requests/${id}/reject`, {
 				method: 'PUT',
 				headers: {

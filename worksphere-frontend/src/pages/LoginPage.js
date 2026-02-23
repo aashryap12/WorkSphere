@@ -34,23 +34,28 @@ function LoginPage() {
         }),
       });
 
-      // Check if response is JSON
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        throw new Error('Backend server is not available. Please ensure the backend is running.');
+      let data;
+      try {
+        data = await response.json();
+      } catch (parseError) {
+        throw new Error('Invalid Credentials');
       }
-
-      const data = await response.json();
 
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
       }
       
-      // Store token and user info from backend response
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('userId', data.userId);
-      localStorage.setItem('username', data.username);
-      localStorage.setItem('role', data.role);
+      // Check if selected role matches the user's actual role
+      if (data.role !== selectedRole) {
+        throw new Error(`Invalid role. You are a ${data.role}, but tried to login as ${selectedRole}.`);
+      }
+      
+      // Store token and user info from backend response in sessionStorage (tab-isolated)
+      sessionStorage.setItem('token', data.token);
+      sessionStorage.setItem('userId', data.userId);
+      sessionStorage.setItem('username', data.username);
+      sessionStorage.setItem('email', data.email);
+      sessionStorage.setItem('role', data.role);
 
       // Redirect based on role from backend
       const roleRoutes = {
@@ -62,11 +67,7 @@ function LoginPage() {
 
       navigate(roleRoutes[data.role] || '/employee-dashboard');
     } catch (err) {
-      if (err.name === 'SyntaxError') {
-        setError('Backend server is not available. Please ensure the backend is running.');
-      } else {
-        setError(err.message);
-      }
+      setError(err.message || 'An error occurred during login');
     } finally {
       setLoading(false);
     }

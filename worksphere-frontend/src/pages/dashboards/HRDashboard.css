@@ -423,7 +423,7 @@
   grid-column: span 2;
 }
 
-.card-header {
+.dashboard-card .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
