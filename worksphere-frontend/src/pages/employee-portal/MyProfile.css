@@ -1,6 +1,6 @@
 .profile-container {
   padding: 24px;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  
   min-height: 100vh;
 }
 
@@ -98,6 +98,7 @@
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
+  width: auto;
 }
 
 .profile-container .profile-card:hover {

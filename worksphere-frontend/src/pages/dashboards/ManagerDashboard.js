@@ -5,6 +5,8 @@ import Icon from '../../components/DashboardIcons';
 import ManagerApprovals from '../manager-portal/ManagerApprovals';
 import Scheduling from '../manager-portal/Scheduling';
 import MyTeam from '../manager-portal/MyTeam';
+import StaticReports from '../manager-portal/StaticReports';
+import ManagerProfile from '../manager-portal/ManagerProfile';
 import './ManagerDashboard.css';
 
 const ManagerDashboard = () => {
@@ -242,6 +244,8 @@ const ManagerDashboard = () => {
         {activePage === 'approvals' && <ManagerApprovals />}
         {activePage === 'scheduling' && <Scheduling />}
         {activePage === 'team' && <MyTeam />}
+        {activePage === 'reports' && <StaticReports />}
+        {activePage === 'profile' && <ManagerProfile />}
       </div>
     </div>
   );

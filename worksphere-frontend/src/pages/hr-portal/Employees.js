@@ -14,6 +14,7 @@ const Employees = () => {
   const [selectedDepartment, setSelectedDepartment] = useState('All');
   const [selectedStatus, setSelectedStatus] = useState('All');
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +27,20 @@ const Employees = () => {
     jobTitle: '',
     departmentId: '',
     managerId: '',
-    hireDate: ''
+    hireDate: '',
+    status: 'Active'
+  });
+  const [editEmployee, setEditEmployee] = useState({
+    id: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    jobTitle: '',
+    departmentId: '',
+    managerId: '',
+    hireDate: '',
+    status: 'Active'
   });
 
   useEffect(() => {
@@ -60,7 +74,6 @@ const Employees = () => {
       }
       
       const data = await response.json();
-      // Map the backend response to match frontend expected format
       const mappedEmployees = data.map(emp => ({
         id: emp.employeeCode || emp.id,
         backendId: emp.id,
@@ -108,7 +121,8 @@ const Employees = () => {
         jobTitle: '',
         departmentId: '',
         managerId: '',
-        hireDate: ''
+        hireDate: '',
+        status: 'Active'
       });
       fetchEmployees();
     } catch (err) {
@@ -139,6 +153,62 @@ const Employees = () => {
     } catch (err) {
       console.error('Error deleting employee:', err);
       alert('Failed to delete employee: ' + err.message);
+    }
+  };
+
+  const openEditModal = (employee) => {
+    const nameParts = employee.name.split(' ');
+    setEditEmployee({
+      id: employee.backendId,
+      firstName: nameParts[0] || '',
+      lastName: nameParts.slice(1).join(' ') || '',
+      email: employee.email || '',
+      phone: employee.phone || '',
+      jobTitle: employee.position || '',
+      departmentId: employee.department || '',
+      managerId: employee.manager || '',
+      hireDate: employee.startDate || '',
+      status: employee.status || 'Active'
+    });
+    setShowEditModal(true);
+  };
+
+  const handleUpdateEmployee = async (e) => {
+    e.preventDefault();
+    try {
+      const token = sessionStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/employees/${editEmployee.id}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(editEmployee)
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to update employee');
+      }
+      
+      setShowEditModal(false);
+      setSelectedEmployee(null);
+      setEditEmployee({
+        id: '',
+        firstName: '',
+        lastName: '',
+        email: '',
+       
+        jobTitle: '',
+        departmentId: '',
+        managerId: '',
+        hireDate: '',
+        status: 'Active'
+      });
+      fetchEmployees();
+      alert('Employee updated successfully!');
+    } catch (err) {
+      console.error('Error updating employee:', err);
+      alert('Failed to update employee: ' + err.message);
     }
   };
 
@@ -205,6 +275,10 @@ const Employees = () => {
             <span className="nav-icon"><Icon name="wallet" /></span>
             Payroll
           </Link>
+          <Link to="/hr-dashboard/my-profile" className="nav-item">
+            <span className="nav-icon"><Icon name="user" /></span>
+            My Profile
+          </Link>
           
         </nav>
         <button className="logout-btn" onClick={handleLogout}>
@@ -231,7 +305,6 @@ const Employees = () => {
             </div>
           </div>
 
-      {/* Stats Cards */}
       <div className="employees-stats">
         <div className="stat-card">
           <div className="stat-icon blue">
@@ -271,7 +344,6 @@ const Employees = () => {
         </div>
       </div>
 
-      {/* Filters Section */}
       <div className="employees-filters">
         <div className="search-box">
           <Icon name="search" />
@@ -304,7 +376,6 @@ const Employees = () => {
         </div>
       </div>
 
-      {/* Employee Table */}
       <div className="employees-table-container">
         {loading && (
           <div className="loading-state">
@@ -383,7 +454,6 @@ const Employees = () => {
         )}
       </div>
 
-      {/* Employee Details Modal */}
       {selectedEmployee && (
         <div className="modal-overlay" onClick={() => setSelectedEmployee(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -429,7 +499,7 @@ const Employees = () => {
               <button className="btn-secondary" onClick={() => setSelectedEmployee(null)}>
                 Close
               </button>
-              <button className="btn-primary">
+              <button className="btn-primary" onClick={() => openEditModal(selectedEmployee)}>
                 Edit Employee
               </button>
             </div>
@@ -437,7 +507,124 @@ const Employees = () => {
         </div>
       )}
 
-      {/* Add Employee Modal */}
+      {showEditModal && (
+        <div className="modal-overlay" onClick={() => setShowEditModal(false)}>
+          <div className="modal-content modal-form" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Edit Employee</h3>
+              <button className="modal-close" onClick={() => setShowEditModal(false)}>
+                <Icon name="close" />
+              </button>
+            </div>
+            <div className="modal-body">
+              <form className="add-employee-form" onSubmit={handleUpdateEmployee}>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>First Name</label>
+                    <input 
+                      type="text" 
+                      placeholder="Enter first name" 
+                      value={editEmployee.firstName}
+                      onChange={(e) => setEditEmployee({...editEmployee, firstName: e.target.value})}
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Last Name</label>
+                    <input 
+                      type="text" 
+                      placeholder="Enter last name" 
+                      value={editEmployee.lastName}
+                      onChange={(e) => setEditEmployee({...editEmployee, lastName: e.target.value})}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Email</label>
+                    <input 
+                      type="email" 
+                      placeholder="Enter email address" 
+                      value={editEmployee.email}
+                      onChange={(e) => setEditEmployee({...editEmployee, email: e.target.value})}
+                      required
+                    />
+                  </div>
+                
+                
+                  <div className="form-group">
+                    <label>Status</label>
+                    <select
+                      value={editEmployee.status}
+                      onChange={(e) => setEditEmployee({...editEmployee, status: e.target.value})}
+                    >
+                      <option value="Active">Active</option>
+                      <option value="On Leave">On Leave</option>
+                      <option value="Probation">Probation</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Department</label>
+                    <select
+                      value={editEmployee.departmentId}
+                      onChange={(e) => setEditEmployee({...editEmployee, departmentId: e.target.value})}
+                    >
+                      <option value="">Select department</option>
+                      {departments.filter((d) => d !== 'All').map((dept) => (
+                        <option key={dept} value={dept}>
+                          {dept}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label>Position</label>
+                    <input 
+                      type="text" 
+                      placeholder="Enter position" 
+                      value={editEmployee.jobTitle}
+                      onChange={(e) => setEditEmployee({...editEmployee, jobTitle: e.target.value})}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Manager</label>
+                    <input 
+                      type="text" 
+                      placeholder="Enter manager name" 
+                      value={editEmployee.managerId}
+                      onChange={(e) => setEditEmployee({...editEmployee, managerId: e.target.value})}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Start Date</label>
+                    <input 
+                      type="date" 
+                      value={editEmployee.hireDate}
+                      onChange={(e) => setEditEmployee({...editEmployee, hireDate: e.target.value})}
+                    />
+                  </div>
+                </div>
+                
+                <div className="modal-footer">
+                  <button type="button" className="btn-secondary" onClick={() => setShowEditModal(false)}>
+                    Cancel
+                  </button>
+                  <button type="submit" className="btn-primary">
+                     Update Employee
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
       {showAddModal && (
         <div className="modal-overlay" onClick={() => setShowAddModal(false)}>
           <div className="modal-content modal-form" onClick={(e) => e.stopPropagation()}>
@@ -481,6 +668,18 @@ const Employees = () => {
                       onChange={(e) => setNewEmployee({...newEmployee, email: e.target.value})}
                       required
                     />
+                  </div>
+                
+                  <div className="form-group">
+                    <label>Status</label>
+                    <select
+                      value={newEmployee.status}
+                      onChange={(e) => setNewEmployee({...newEmployee, status: e.target.value})}
+                    >
+                      <option value="Active">Active</option>
+                      <option value="On Leave">On Leave</option>
+                      <option value="Probation">Probation</option>
+                    </select>
                   </div>
                 </div>
                 <div className="form-row">
@@ -528,6 +727,7 @@ const Employees = () => {
                     />
                   </div>
                 </div>
+                
                 <div className="modal-footer">
                   <button type="button" className="btn-secondary" onClick={() => setShowAddModal(false)}>
                     Cancel

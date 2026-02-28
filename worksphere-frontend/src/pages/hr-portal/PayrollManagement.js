@@ -243,6 +243,10 @@ const PayrollManagement = () => {
             <span className="nav-icon"><Icon name="wallet" /></span>
             Payroll
           </Link>
+          <Link to="/hr-dashboard/my-profile" className="nav-item">
+            <span className="nav-icon"><Icon name="user" /></span>
+            My Profile
+          </Link>
         </nav>
         <button className="logout-btn" onClick={handleLogout}>
           <span className="nav-icon"><Icon name="log" /></span>
